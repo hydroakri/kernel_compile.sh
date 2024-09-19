@@ -10,11 +10,11 @@ unset CLEANED
 export KBUILD_BUILD_USER=hydroakri
 export KBUILD_BUILD_HOST=Debian
 export PATH=/home/hydroakri/git-app/toolchain/clang-r487747/bin:$PATH
-workPath=~/git-app
+patchName=cake.patch
+branch=lineage-21
+workPath=~/playground/kernel_compile.sh
 sourcePath=$workPath/android_kernel_oneplus_sm8250
 patchPath=$workPath/$patchName
-branch=lineage-21
-patchName=cake.patch
 kernelPath=$sourcePath/out/arch/arm64/boot/Image
 bootURL=https://mirrors.ustc.edu.cn/lineageos/full/lemonades/20240913/boot.img
 
