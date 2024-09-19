@@ -1,0 +1,64 @@
+diff --git a/arch/arm64/configs/vendor/kona-perf_defconfig b/arch/arm64/configs/vendor/kona-perf_defconfig
+index 404d33fbb..716b2a2d2 100644
+--- a/arch/arm64/configs/vendor/kona-perf_defconfig
++++ b/arch/arm64/configs/vendor/kona-perf_defconfig
+@@ -89,7 +89,7 @@ CONFIG_CPU_FREQ_GOV_USERSPACE=y
+ CONFIG_CPU_FREQ_GOV_ONDEMAND=y
+ CONFIG_CPU_FREQ_GOV_CONSERVATIVE=y
+ CONFIG_CPU_BOOST=y
+-CONFIG_CPU_FREQ_GOV_SCHEDUTIL=y
++CONFIG_CPU_FREQ_GOV_SCHEDUTIL=n
+ #ifdef VENDOR_EDIT
+ CONFIG_CPU_FREQ_STAT=y
+ #endif
+@@ -1118,3 +1118,27 @@ CONFIG_LRU_GEN_STATS=n
+ CONFIG_OPLUS_FEATURE_CPU_JANKINFO=y
+ 
+ CONFIG_CRYPTO_CHACHA20POLY1305=y
++CONFIG_QCOM_ADRENO_DEFAULT_GOVERNOR="simple_ondemand"
++CONFIG_WQ_POWER_EFFICIENT_DEFAULT=y
++CONFIG_NET_SCH_DEFAULT=y
++CONFIG_DEFAULT_CAKE=y
++CONFIG_DEFAULT_NET_SCH="cake"
++CONFIG_NET_SCH_CAKE=y
++CONFIG_TCP_CONG_ADVANCED=y
++CONFIG_DEFAULT_BBR=y
++CONFIG_DEFAULT_TCP_CONG="bbr"
++CONFIG_TCP_CONG_BBR=y
++CONFIG_PM_WAKELOCKS_GC=y
++CONFIG_HZ_100=y
++CONFIG_HZ=100
++CONFIG_NO_HZ_IDLE=y
++CONFIG_SPARSEMEM_VMEMMAP_ENABLE=y
++CONFIG_SPARSEMEM_VMEMMAP=y
++CONFIG_CPU_FREQ_DEFAULT_GOV_CONSERVATIVE=y
++CONFIG_ARM_QCOM_CPUFREQ_KRYO=y
++CONFIG_LTO=y
++CONFIG_LTO_CLANG=y
++CONFIG_THINLTO=y
++CONFIG_LTO_NONE=n
++CONFIG_HAVE_KPROBES=y
++CONFIG_KPROBE_EVENTS=y
++CONFIG_KSU=y
+diff --git a/net/sched/Kconfig b/net/sched/Kconfig
+index 567ca509b..67ebfa256 100644
+--- a/net/sched/Kconfig
++++ b/net/sched/Kconfig
+@@ -388,6 +388,9 @@ choice
+ 	config DEFAULT_SFQ
+ 		bool "Stochastic Fair Queue" if NET_SCH_SFQ
+ 
++    config DEFAULT_CAKE
++        bool "Common Applications Kept Enhanced (CAKE)" if NET_SCH_CAKE
++
+ 	config DEFAULT_PFIFO_FAST
+ 		bool "Priority FIFO Fast"
+ endchoice
+@@ -398,6 +401,7 @@ config DEFAULT_NET_SCH
+ 	default "fq" if DEFAULT_FQ
+ 	default "fq_codel" if DEFAULT_FQ_CODEL
+ 	default "sfq" if DEFAULT_SFQ
++    default "cake" if DEFAULT_CAKE
+ 	default "pfifo_fast"
+ endif
+ 
