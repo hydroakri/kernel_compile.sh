@@ -1,16 +1,7 @@
 diff --git a/arch/arm64/configs/vendor/kona-perf_defconfig b/arch/arm64/configs/vendor/kona-perf_defconfig
-index 404d33fbb..716b2a2d2 100644
+index 404d33fbb..96ed6550f 100644
 --- a/arch/arm64/configs/vendor/kona-perf_defconfig
 +++ b/arch/arm64/configs/vendor/kona-perf_defconfig
-@@ -89,7 +89,7 @@ CONFIG_CPU_FREQ_GOV_USERSPACE=y
- CONFIG_CPU_FREQ_GOV_ONDEMAND=y
- CONFIG_CPU_FREQ_GOV_CONSERVATIVE=y
- CONFIG_CPU_BOOST=y
--CONFIG_CPU_FREQ_GOV_SCHEDUTIL=y
-+CONFIG_CPU_FREQ_GOV_SCHEDUTIL=n
- #ifdef VENDOR_EDIT
- CONFIG_CPU_FREQ_STAT=y
- #endif
 @@ -1118,3 +1118,27 @@ CONFIG_LRU_GEN_STATS=n
  CONFIG_OPLUS_FEATURE_CPU_JANKINFO=y
  
@@ -26,8 +17,8 @@ index 404d33fbb..716b2a2d2 100644
 +CONFIG_DEFAULT_TCP_CONG="bbr"
 +CONFIG_TCP_CONG_BBR=y
 +CONFIG_PM_WAKELOCKS_GC=y
-+CONFIG_HZ_100=y
-+CONFIG_HZ=100
++CONFIG_HZ_1000=y
++CONFIG_HZ=1000
 +CONFIG_NO_HZ_IDLE=y
 +CONFIG_SPARSEMEM_VMEMMAP_ENABLE=y
 +CONFIG_SPARSEMEM_VMEMMAP=y
@@ -39,7 +30,6 @@ index 404d33fbb..716b2a2d2 100644
 +CONFIG_LTO_NONE=n
 +CONFIG_HAVE_KPROBES=y
 +CONFIG_KPROBE_EVENTS=y
-+CONFIG_KSU=y
 diff --git a/net/sched/Kconfig b/net/sched/Kconfig
 index 567ca509b..67ebfa256 100644
 --- a/net/sched/Kconfig
