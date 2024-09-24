@@ -1,3 +1,9 @@
 [submodule "android_kernel_oneplus_sm8250"]
 	path = android_kernel_oneplus_sm8250
 	url = https://github.com/lineageOS/android_kernel_oneplus_sm8250
+[submodule "toolchain/android_prebuilts_clang_kernel_linux-x86_clang-r416183b"]
+	path = toolchain/android_prebuilts_clang_kernel_linux-x86_clang-r416183b
+	url = https://github.com/lineageOS/android_prebuilts_clang_kernel_linux-x86_clang-r416183b
+[submodule "toolchain/android_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-android-4.9"]
+	path = toolchain/android_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-android-4.9
+	url = https://github.com/lineageOS/android_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-android-4.9

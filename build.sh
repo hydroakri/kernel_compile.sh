@@ -18,7 +18,9 @@ workPath=~/playground/kernel_compile.sh
 sourcePath=$workPath/android_kernel_oneplus_sm8250
 patchPath=$workPath/$patchName
 kernelPath=$sourcePath/out/arch/arm64/boot/Image
-export PATH=$workPath/toolchain/clang-r487747/bin:$PATH #################
+# export PATH=$workPath/toolchain/clang-r487747/bin:$PATH
+export PATH=$PATH:$workPath/toolchain/android_prebuilts_clang_kernel_linux-x86_clang-r416183b/bin
+export PATH=$PATH:$workPath/toolchain/android_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-android-4.9/bin
 bootURL=https://mirrors.ustc.edu.cn/lineageos/full/lemonades/20240913/boot.img
 
 # Clean change and output
@@ -36,14 +38,14 @@ make mrproper
 
 # Apply patch
 echo -e "\033[32mApplying patch...\033[0m"
-curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -s v0.9.5 || { echo -e "\033[31mFailed to setup KernelSU\033[0m"; exit 1; }
+# curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -s v0.9.5 || { echo -e "\033[31mFailed to setup KernelSU\033[0m"; exit 1; }
 cp $patchPath $sourcePath || { echo -e "\033[31mFailed to copy patch\033[0m"; exit 1; }
 patch -p1 < $patchName || { echo -e "\033[31mFailed to apply patch\033[0m"; exit 1; }
 
 # Compile
 echo -e "\033[32mCompiling kernel...\033[0m"
-make -j$(nproc --all) O=out ARCH=arm64 CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE=aarch64-linux-android- HOSTCC="clang -Ofast" CC="clang -Ofast" LLVM=1 LLVM_IAS=1 vendor/kona-perf_defconfig || { echo -e "\033[31mFailed to configure kernel build\033[0m"; exit 1; }
-make -j$(nproc --all) O=out ARCH=arm64 CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE=aarch64-linux-android- HOSTCC="clang -Ofast" CC="clang -Ofast" LLVM=1 LLVM_IAS=1 || { echo -e "\033[31mFailed to build kernel\033[0m"; exit 1; }
+make -j$(nproc --all) O=out ARCH=arm64 CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE=aarch64-linux-gnu- HOSTCC="clang -Ofast" CC="clang -Ofast" LLVM=1 LLVM_IAS=1 vendor/kona-perf_defconfig || { echo -e "\033[31mFailed to configure kernel build\033[0m"; exit 1; }
+make -j$(nproc --all) O=out ARCH=arm64 CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE=aarch64-linux-gnu- HOSTCC="clang -Ofast" CC="clang -Ofast" LLVM=1 LLVM_IAS=1 || { echo -e "\033[31mFailed to build kernel\033[0m"; exit 1; }
 
 # Repack boot.img
 echo -e "\033[32mRepacking boot.img...\033[0m"
