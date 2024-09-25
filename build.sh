@@ -12,6 +12,7 @@ unset CLEANED
 echo -e "\033[32mSetting variables...\033[0m"
 export KBUILD_BUILD_USER=$USER
 export KBUILD_BUILD_HOST=$HOST
+export USE_CCACHE=1
 patchName=cake.patch
 branch=lineage-21
 workPath=~/playground/kernel_compile.sh
@@ -44,8 +45,8 @@ patch -p1 < $patchName || { echo -e "\033[31mFailed to apply patch\033[0m"; exit
 
 # Compile
 echo -e "\033[32mCompiling kernel...\033[0m"
-make -j$(nproc --all) O=out ARCH=arm64 CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE=aarch64-linux-gnu- HOSTCC="clang -Ofast" CC="clang -Ofast" LLVM=1 LLVM_IAS=1 vendor/kona-perf_defconfig || { echo -e "\033[31mFailed to configure kernel build\033[0m"; exit 1; }
-make -j$(nproc --all) O=out ARCH=arm64 CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE=aarch64-linux-gnu- HOSTCC="clang -Ofast" CC="clang -Ofast" LLVM=1 LLVM_IAS=1 || { echo -e "\033[31mFailed to build kernel\033[0m"; exit 1; }
+make -j$(nproc --all) O=out ARCH=arm64 CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE=aarch64-linux-gnu- HOSTCC="ccache clang -Ofast" CC="ccache clang -Ofast" LLVM=1 LLVM_IAS=1 vendor/kona-perf_defconfig || { echo -e "\033[31mFailed to configure kernel build\033[0m"; exit 1; }
+make -j$(nproc --all) O=out ARCH=arm64 CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE=aarch64-linux-gnu- HOSTCC="ccache clang -Ofast" CC="ccache clang -Ofast" LLVM=1 LLVM_IAS=1 || { echo -e "\033[31mFailed to build kernel\033[0m"; exit 1; }
 
 # Repack boot.img
 echo -e "\033[32mRepacking boot.img...\033[0m"
