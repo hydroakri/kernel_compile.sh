@@ -22,6 +22,7 @@ kernelPath=$sourcePath/out/arch/arm64/boot/Image
 # export PATH=$workPath/toolchain/clang-r487747/bin:$PATH
 export PATH=$PATH:$workPath/toolchain/android_prebuilts_clang_kernel_linux-x86_clang-r416183b/bin
 export PATH=$PATH:$workPath/toolchain/android_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-android-4.9/bin
+export PATH=$PATH:$workPath/toolchain/android_prebuilts_gcc_linux-x86_arm_arm-linux-androideabi-4.9/bin
 bootURL=https://mirrorbits.lineageos.org/full/lemonades/20240928/boot.img
 
 # Clean change and output
@@ -45,8 +46,8 @@ patch -p1 < $patchName || { echo -e "\033[31mFailed to apply patch\033[0m"; exit
 
 # Compile
 echo -e "\033[32mCompiling kernel...\033[0m"
-make -j$(nproc --all) O=out ARCH=arm64 CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE=aarch64-linux-gnu- HOSTCC="ccache clang -Ofast" CC="ccache clang -Ofast" LLVM=1 LLVM_IAS=1 vendor/kona-perf_defconfig || { echo -e "\033[31mFailed to configure kernel build\033[0m"; exit 1; }
-make -j$(nproc --all) O=out ARCH=arm64 CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE=aarch64-linux-gnu- HOSTCC="ccache clang -Ofast" CC="ccache clang -Ofast" LLVM=1 LLVM_IAS=1 || { echo -e "\033[31mFailed to build kernel\033[0m"; exit 1; }
+make -j$(nproc --all) O=out ARCH=arm64 CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_COMPAT=arm-linux-gnueabi- HOSTCC="ccache clang -Ofast" CC="ccache clang -Ofast" LLVM=1 LLVM_IAS=1 LD=ld.lld AR=llvm-ar NM=llvm-nm OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump READELF=llvm-readelf OBJSIZE=llvm-size STRIP=llvm-strip LDGOLD=aarch64-linux-gnu-ld.gold LLVM_AR=llvm-ar LLVM_DIS=llvm-dis kona-perf_defconfig || { echo -e "\033[31mFailed to configure kernel build\033[0m"; exit 1; }
+make -j$(nproc --all) O=out ARCH=arm64 CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_COMPAT=arm-linux-gnueabi- HOSTCC="ccache clang -Ofast" CC="ccache clang -Ofast" LLVM=1 LLVM_IAS=1 LD=ld.lld AR=llvm-ar NM=llvm-nm OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump READELF=llvm-readelf OBJSIZE=llvm-size STRIP=llvm-strip LDGOLD=aarch64-linux-gnu-ld.gold LLVM_AR=llvm-ar LLVM_DIS=llvm-dis || { echo -e "\033[31mFailed to build kernel\033[0m"; exit 1; }
 
 # Repack boot.img
 echo -e "\033[32mRepacking boot.img...\033[0m"
