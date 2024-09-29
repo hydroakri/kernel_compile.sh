@@ -46,8 +46,8 @@ patch -p1 < $patchName || { echo -e "\033[31mFailed to apply patch\033[0m"; exit
 
 # Compile
 echo -e "\033[32mCompiling kernel...\033[0m"
-make -j$(nproc --all) O=out ARCH=arm64 CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_COMPAT=arm-linux-gnueabi- HOSTCC="ccache clang -Ofast" CC="ccache clang -Ofast" LLVM=1 LLVM_IAS=1 LD=ld.lld AR=llvm-ar NM=llvm-nm OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump READELF=llvm-readelf OBJSIZE=llvm-size STRIP=llvm-strip LDGOLD=aarch64-linux-gnu-ld.gold LLVM_AR=llvm-ar LLVM_DIS=llvm-dis kona-perf_defconfig || { echo -e "\033[31mFailed to configure kernel build\033[0m"; exit 1; }
-make -j$(nproc --all) O=out ARCH=arm64 CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_COMPAT=arm-linux-gnueabi- HOSTCC="ccache clang -Ofast" CC="ccache clang -Ofast" LLVM=1 LLVM_IAS=1 LD=ld.lld AR=llvm-ar NM=llvm-nm OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump READELF=llvm-readelf OBJSIZE=llvm-size STRIP=llvm-strip LDGOLD=aarch64-linux-gnu-ld.gold LLVM_AR=llvm-ar LLVM_DIS=llvm-dis || { echo -e "\033[31mFailed to build kernel\033[0m"; exit 1; }
+make -j$(nproc --all) O=out ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_COMPAT=arm-linux-gnueabi- HOSTCC="ccache clang -O2" CC="ccache clang -O2" LLVM=1 LLVM_IAS=1 vendor/kona-perf_defconfig || { echo -e "\033[31mFailed to configure kernel build\033[0m"; exit 1; }
+make -j$(nproc --all) O=out ARCH=arm64 CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_COMPAT=arm-linux-gnueabi- HOSTCC="ccache clang -O2" CC="ccache clang -O2" LLVM=1 LLVM_IAS=1 || { echo -e "\033[31mFailed to build kernel\033[0m"; exit 1; }
 
 # Repack boot.img
 echo -e "\033[32mRepacking boot.img...\033[0m"
