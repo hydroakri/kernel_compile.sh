@@ -22,7 +22,7 @@ kernelPath=$sourcePath/out/arch/arm64/boot/Image
 # export PATH=$workPath/toolchain/clang-r487747/bin:$PATH
 export PATH=$PATH:$workPath/toolchain/android_prebuilts_clang_kernel_linux-x86_clang-r416183b/bin
 export PATH=$PATH:$workPath/toolchain/android_prebuilts_gcc_linux-x86_aarch64_aarch64-linux-android-4.9/bin
-bootURL=https://mirrors.ustc.edu.cn/lineageos/full/lemonades/20240913/boot.img
+bootURL=https://mirrorbits.lineageos.org/full/lemonades/20240928/boot.img
 
 # Clean change and output
 echo -e "\033[32mCleaning source and output directories...\033[0m"
