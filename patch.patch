@@ -1,0 +1,101 @@
+diff --git a/arch/arm64/configs/vendor/kona-perf_defconfig b/arch/arm64/configs/vendor/kona-perf_defconfig
+index 404d33fbb..dc8d88d55 100644
+--- a/arch/arm64/configs/vendor/kona-perf_defconfig
++++ b/arch/arm64/configs/vendor/kona-perf_defconfig
+@@ -1118,3 +1118,26 @@ CONFIG_LRU_GEN_STATS=n
+ CONFIG_OPLUS_FEATURE_CPU_JANKINFO=y
+ 
+ CONFIG_CRYPTO_CHACHA20POLY1305=y
++
++CONFIG_QCOM_ADRENO_DEFAULT_GOVERNOR="simple_ondemand"
++CONFIG_NET_SCH_DEFAULT=y
++CONFIG_DEFAULT_CAKE=y
++CONFIG_DEFAULT_NET_SCH="cake"
++CONFIG_NET_SCH_CAKE=y
++CONFIG_TCP_CONG_ADVANCED=y
++CONFIG_DEFAULT_BBR=y
++CONFIG_DEFAULT_TCP_CONG="bbr"
++CONFIG_TCP_CONG_BBR=y
++CONFIG_HZ_1000=y
++CONFIG_HZ=1000
++
++CONFIG_PM_WAKELOCKS_GC=y
++CONFIG_WQ_POWER_EFFICIENT_DEFAULT=y
++CONFIG_NO_HZ_IDLE=y
++CONFIG_SPARSEMEM_VMEMMAP_ENABLE=y
++CONFIG_SPARSEMEM_VMEMMAP=y
++
++CONFIG_LTO=y
++CONFIG_LTO_CLANG=y
++CONFIG_THINLTO=y
++CONFIG_LTO_NONE=n
+diff --git a/mm/malloc_track/slub_track.c b/mm/malloc_track/slub_track.c
+index c7c289ed3..f20608ca5 100644
+--- a/mm/malloc_track/slub_track.c
++++ b/mm/malloc_track/slub_track.c
+@@ -990,7 +990,7 @@ int __init create_kmalloc_debug(struct proc_dir_entry *parent)
+ #endif
+ 	return 0;
+ }
+-EXPORT_SYMBOL(create_kmalloc_debug);
++// EXPORT_SYMBOL(create_kmalloc_debug);
+ #endif
+ 
+ #if defined(CONFIG_MEMLEAK_DETECT_THREAD) && defined(CONFIG_SVELTE)
+diff --git a/mm/malloc_track/vmalloc_track.c b/mm/malloc_track/vmalloc_track.c
+index d96f4a07d..a62f3376b 100644
+--- a/mm/malloc_track/vmalloc_track.c
++++ b/mm/malloc_track/vmalloc_track.c
+@@ -608,5 +608,5 @@ int __init create_vmalloc_debug(struct proc_dir_entry *parent)
+ 	}
+ 	return 0;
+ }
+-EXPORT_SYMBOL(create_vmalloc_debug);
++// EXPORT_SYMBOL(create_vmalloc_debug);
+ #endif /* _VMALLOC_DEBUG_ */
+diff --git a/mm/slub.c b/mm/slub.c
+index 22de88eb9..08eb67f4e 100644
+--- a/mm/slub.c
++++ b/mm/slub.c
+@@ -6308,6 +6308,6 @@ int __init __weak create_kmalloc_debug(struct proc_dir_entry *parent)
+ 	pr_warn("OPLUS_FEATURE_MEMLEAK_DETECT is off.\n");
+ 	return 0;
+ }
+-EXPORT_SYMBOL(create_kmalloc_debug);
++// EXPORT_SYMBOL(create_kmalloc_debug);
+ #endif
+ #endif
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index e028c9584..8373d0665 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -3548,6 +3548,6 @@ int __init __weak create_vmalloc_debug(struct proc_dir_entry *parent)
+ 	pr_warn("OPLUS_FEATURE_MEMLEAK_DETECT is off.\n");
+ 	return 0;
+ }
+-EXPORT_SYMBOL(create_vmalloc_debug);
++// EXPORT_SYMBOL(create_vmalloc_debug);
+ #endif
+ #endif
+diff --git a/net/sched/Kconfig b/net/sched/Kconfig
+index 567ca509b..67ebfa256 100644
+--- a/net/sched/Kconfig
++++ b/net/sched/Kconfig
+@@ -388,6 +388,9 @@ choice
+ 	config DEFAULT_SFQ
+ 		bool "Stochastic Fair Queue" if NET_SCH_SFQ
+ 
++    config DEFAULT_CAKE
++        bool "Common Applications Kept Enhanced (CAKE)" if NET_SCH_CAKE
++
+ 	config DEFAULT_PFIFO_FAST
+ 		bool "Priority FIFO Fast"
+ endchoice
+@@ -398,6 +401,7 @@ config DEFAULT_NET_SCH
+ 	default "fq" if DEFAULT_FQ
+ 	default "fq_codel" if DEFAULT_FQ_CODEL
+ 	default "sfq" if DEFAULT_SFQ
++    default "cake" if DEFAULT_CAKE
+ 	default "pfifo_fast"
+ endif
+ 
