@@ -32,9 +32,9 @@ make clean
 rm -fr out/.config out/arch/arm64/boot
 rm -fr KernelSU
 echo -e "\033[32mFetching latest code from $branch...\033[0m"
-git fetch --all --depth=1 || { echo -e "\033[31mFailed to fetch repo!\033[0m"; exit 1; }
+# git fetch --all --depth=1 || { echo -e "\033[31mFailed to fetch repo!\033[0m"; exit 1; }
 git reset --hard origin/$branch
-git pull
+# git pull
 echo -e "\033[32mCleaning kernel build environment...\033[0m"
 make mrproper
 
@@ -43,20 +43,19 @@ echo -e "\033[32mApplying patch...\033[0m"
 # curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -s v0.9.5 || { echo -e "\033[31mFailed to setup KernelSU\033[0m"; exit 1; }
 cp $patchPath $sourcePath || { echo -e "\033[31mFailed to copy patch\033[0m"; exit 1; }
 patch -p1 < $patchName || { echo -e "\033[31mFailed to apply patch\033[0m"; exit 1; }
-cp $workPath/config $sourcePath/out/.config
 
 # Compile
 echo -e "\033[32mCompiling kernel...\033[0m"
-# make -j$(nproc --all) O=out ARCH=arm64 CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_COMPAT=arm-linux-gnueabi- HOSTCC="ccache clang -O2" CC="ccache clang -O2" LLVM=1 LLVM_IAS=1 vendor/kona-perf_defconfig || { echo -e "\033[31mFailed to configure kernel build\033[0m"; exit 1; }
-make -j$(nproc --all) O=out ARCH=arm64 CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_COMPAT=arm-linux-gnueabi- HOSTCC="ccache clang -O2" CC="ccache clang -O2" LLVM=1 LLVM_IAS=1 || { echo -e "\033[31mFailed to build kernel\033[0m"; exit 1; }
+make -j$(nproc --all) O=out ARCH=arm64 CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_COMPAT=arm-linux-gnueabi- HOSTCC="ccache clang -Ofast" CC="ccache clang -Ofast" LLVM=1 LLVM_IAS=1 vendor/kona-perf_defconfig || { echo -e "\033[31mFailed to configure kernel build\033[0m"; exit 1; }
+make -j$(nproc --all) O=out ARCH=arm64 CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_COMPAT=arm-linux-gnueabi- HOSTCC="ccache clang -Ofast" CC="ccache clang -Ofast" LLVM=1 LLVM_IAS=1 || { echo -e "\033[31mFailed to build kernel\033[0m"; exit 1; }
 
 # Repack boot.img
 echo -e "\033[32mRepacking boot.img...\033[0m"
 cd $workPath || { echo -e "\033[31mFailed to change directory to $workPath\033[0m"; exit 1; }
 rm -fr boot_img
-rm boot.img
+# rm boot.img
 rm new.img
-wget $bootURL || { echo -e "\033[31mFailed to download boot.img\033[0m"; exit 1; }
+# wget $bootURL || { echo -e "\033[31mFailed to download boot.img\033[0m"; exit 1; }
 sleep 5
 unpack_bootimg --boot_img boot.img --out boot_img || { echo -e "\033[31mFailed to unpack boot.img\033[0m"; exit 1; }
 unpack_bootimg --boot_img boot.img --out boot_img --format mkbootimg | sed "s#--kernel [^ ]*#--kernel $kernelPath#" | xargs mkbootimg -o new.img || { echo -e "\033[31mFailed to repack boot.img\033[0m"; exit 1; }
