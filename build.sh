@@ -32,9 +32,9 @@ make clean
 rm -fr out/.config out/arch/arm64/boot
 rm -fr KernelSU
 echo -e "\033[32mFetching latest code from $branch...\033[0m"
-# git fetch --all --depth=1 || { echo -e "\033[31mFailed to fetch repo!\033[0m"; exit 1; }
+git fetch --all --depth=1 || { echo -e "\033[31mFailed to fetch repo!\033[0m"; exit 1; }
 git reset --hard origin/$branch
-# git pull
+git pull
 echo -e "\033[32mCleaning kernel build environment...\033[0m"
 make mrproper
 
@@ -53,9 +53,9 @@ make -j$(nproc --all) O=out ARCH=arm64 CLANG_TRIPLE=aarch64-linux-gnu- CROSS_COM
 echo -e "\033[32mRepacking boot.img...\033[0m"
 cd $workPath || { echo -e "\033[31mFailed to change directory to $workPath\033[0m"; exit 1; }
 rm -fr boot_img
-# rm boot.img
+rm boot.img
 rm new.img
-# wget $bootURL || { echo -e "\033[31mFailed to download boot.img\033[0m"; exit 1; }
+wget $bootURL || { echo -e "\033[31mFailed to download boot.img\033[0m"; exit 1; }
 sleep 5
 unpack_bootimg --boot_img boot.img --out boot_img || { echo -e "\033[31mFailed to unpack boot.img\033[0m"; exit 1; }
 unpack_bootimg --boot_img boot.img --out boot_img --format mkbootimg | sed "s#--kernel [^ ]*#--kernel $kernelPath#" | xargs mkbootimg -o new.img || { echo -e "\033[31mFailed to repack boot.img\033[0m"; exit 1; }

@@ -1,8 +1,8 @@
 diff --git a/arch/arm64/configs/vendor/kona-perf_defconfig b/arch/arm64/configs/vendor/kona-perf_defconfig
-index 404d33fbb..96e5a4037 100644
+index 404d33fbb..b557f936d 100644
 --- a/arch/arm64/configs/vendor/kona-perf_defconfig
 +++ b/arch/arm64/configs/vendor/kona-perf_defconfig
-@@ -1118,3 +1118,26 @@ CONFIG_LRU_GEN_STATS=n
+@@ -1118,3 +1118,35 @@ CONFIG_LRU_GEN_STATS=n
  CONFIG_OPLUS_FEATURE_CPU_JANKINFO=y
  
  CONFIG_CRYPTO_CHACHA20POLY1305=y
@@ -18,17 +18,26 @@ index 404d33fbb..96e5a4037 100644
 +#CONFIG_TCP_CONG_BBR=y
 +CONFIG_HZ_1000=y
 +CONFIG_HZ=1000
-+
 +CONFIG_PM_WAKELOCKS_GC=y
 +CONFIG_WQ_POWER_EFFICIENT_DEFAULT=y
 +CONFIG_NO_HZ_IDLE=y
 +CONFIG_SPARSEMEM_VMEMMAP_ENABLE=y
 +CONFIG_SPARSEMEM_VMEMMAP=y
-+
 +CONFIG_LTO=y
 +CONFIG_LTO_CLANG=y
 +CONFIG_THINLTO=y
 +CONFIG_LTO_NONE=n
++
++# disable debug option
++CONFIG_BLK_DEBUG_FS=n
++CONFIG_CMA_DEBUGFS=n
++CONFIG_BT_DEBUGFS=n
++CONFIG_REGMAP_ALLOW_WRITE_DEBUGFS=n
++CONFIG_WIL6210_DEBUGFS=n
++CONFIG_IPA_UT=n
++CONFIG_MSM_IDLE_STATS=n
++CONFIG_QMP_DEBUGFS_CLIENT=n
++CONFIG_DEBUG_FS=n
 diff --git a/mm/malloc_track/slub_track.c b/mm/malloc_track/slub_track.c
 index c7c289ed3..f20608ca5 100644
 --- a/mm/malloc_track/slub_track.c
